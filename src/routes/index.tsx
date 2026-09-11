@@ -1,24 +1,29 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { ArrowRight, Clock3, QrCode, ShoppingBag, Sparkles, Trophy } from "lucide-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { activeOrder, foodItems } from "@/data/qbite";
+import { CanteenStatus, FoodCard, PickupDetails, QueueCard, SectionTitle, StatusBadge } from "@/components/qbite/shared";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
-  component: Index,
+  head: () => ({ meta: [
+    { title: "QBite — Skip the Campus Queue" },
+    { name: "description", content: "Pre-order campus food, pick a time, and collect without standing in line." },
+    { property: "og:title", content: "QBite — Skip the Campus Queue" },
+    { property: "og:description", content: "Campus canteen pre-orders and faster pickup." },
+    { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary_large_image" },
+  ]}), component: Dashboard,
 });
-
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
+function Dashboard() {
+  const favorites = foodItems.filter(i=>["sandwich","coffee","maggi"].includes(i.id));
+  return <div className="space-y-9">
+    <section className="grid gap-5 lg:grid-cols-[minmax(0,1.35fr)_minmax(280px,.65fr)]"><div className="overflow-hidden rounded-lg bg-foreground p-6 text-background sm:p-8"><p className="text-sm font-bold text-primary">Good afternoon, Shikhar</p><h1 className="mt-3 max-w-xl text-3xl font-extrabold sm:text-5xl">Lunch without the long line.</h1><p className="mt-3 max-w-lg text-sm leading-6 text-background/70 sm:text-base">Order from the campus canteen, choose a pickup slot, and get back to what matters.</p><div className="mt-6 flex flex-wrap gap-3"><Button asChild size="lg"><Link to="/menu"><ShoppingBag/>Order food</Link></Button><Button asChild size="lg" variant="secondary"><Link to="/tracking">Track QB104</Link></Button></div><div className="mt-8 flex flex-wrap gap-x-7 gap-y-3 border-t border-background/15 pt-5 text-sm"><span><strong className="block text-xl text-primary">10 min</strong>avg. queue time saved</span><span><strong className="block text-xl text-primary">3 steps</strong>order to pickup</span><span><strong className="block text-xl text-primary">1 QR</strong>fast collection</span></div></div><div className="space-y-4"><CanteenStatus/><Card className="border-primary/20 bg-primary/10 p-5"><div className="flex gap-3"><span className="text-xl">📢</span><div><p className="text-xs font-bold uppercase text-primary">Today’s special</p><p className="mt-1 font-bold">Paneer Roll is on the menu</p><p className="mt-1 text-sm text-muted-foreground">Freshly made until 4 PM.</p></div></div></Card></div></section>
+    <section className="grid gap-5 lg:grid-cols-2"><QueueCard/><Card className="p-5 sm:p-6"><div className="flex items-start justify-between gap-3"><div><p className="text-sm font-semibold text-muted-foreground">Active order</p><h2 className="mt-1 text-2xl font-bold">Order {activeOrder.id}</h2></div><StatusBadge status={activeOrder.status}/></div><div className="mt-5"><PickupDetails/></div><div className="mt-5 flex items-center justify-between"><p className="text-sm text-muted-foreground">Estimated ready <strong className="text-foreground">{activeOrder.readyAt}</strong></p><Button asChild variant="outline"><Link to="/tracking">View progress <ArrowRight/></Link></Button></div></Card></section>
+    <section className="space-y-4"><SectionTitle title="Your QBite Stats" note="Demo metrics showing how much time QBite gives back."/><div className="grid grid-cols-3 gap-3"><Stat icon={<ShoppingBag/>} value="12" label="Orders"/><Stat icon={<span className="font-bold">₹</span>} value="840" label="Total spent"/><Stat icon={<Clock3/>} value="38 min" label="Time saved"/></div></section>
+    <section className="space-y-4"><SectionTitle title="Your Favorites" note="Your usuals, one tap away." action={<Button asChild variant="ghost"><Link to="/favorites">See all</Link></Button>}/><div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{favorites.map(item=><FoodCard key={item.id} item={item} compact/>)}</div></section>
+    <section className="space-y-5"><SectionTitle title="The faster campus lunch" note="Illustrative flow for the QBite demo."/><div className="grid gap-3 md:grid-cols-2"><Flow title="Traditional canteen" steps={["Join queue","Wait","Order","Wait","Collect"]} muted/><Flow title="QBite" steps={["Browse","Pre-order","Pick slot","Collect"]}/></div></section>
+    <section className="space-y-5"><SectionTitle title="How QBite works"/><div className="grid gap-px overflow-hidden rounded-lg border bg-border sm:grid-cols-5">{[["01","Browse","Choose your food."],["02","Pre-order","Build your order."],["03","Pick a slot","Choose collection time."],["04","Track","See live progress."],["05","Pick up","Show QR and collect."]].map(([n,t,d])=><div key={n} className="group bg-card p-5 transition hover:bg-primary/5"><span className="text-sm font-black text-primary">{n}</span><h3 className="mt-8 font-bold">{t}</h3><p className="mt-1 text-sm text-muted-foreground">{d}</p></div>)}</div></section>
+  </div>;
 }
+function Stat({icon,value,label}:{icon:React.ReactNode;value:string;label:string}){return <Card className="p-4 sm:p-5"><div className="text-primary [&_svg]:h-5 [&_svg]:w-5">{icon}</div><strong className="mt-5 block text-xl sm:text-3xl">{value}</strong><span className="text-xs text-muted-foreground sm:text-sm">{label}</span></Card>}
+function Flow({title,steps,muted=false}:{title:string;steps:string[];muted?:boolean}){return <Card className={muted?"bg-secondary/60 p-5":"border-primary/25 bg-primary/5 p-5"}><div className="flex items-center gap-2"><span className={muted?"text-muted-foreground":"text-primary"}>{muted?<Clock3/>:<Sparkles/>}</span><h3 className="font-bold">{title}</h3></div><div className="mt-4 flex flex-wrap items-center gap-2 text-xs font-semibold sm:text-sm">{steps.map((s,i)=><span key={s} className="contents"><span className="rounded-md bg-background px-2.5 py-2">{s}</span>{i<steps.length-1&&<span className="text-muted-foreground">→</span>}</span>)}</div></Card>}
