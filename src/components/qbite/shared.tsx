@@ -1,4 +1,4 @@
-import { Check, Circle, Clock3, Heart, MapPin, Minus, Plus, Queue, ShoppingBag, WifiOff } from "lucide-react";
+import { Check, Circle, Clock3, Heart, ListOrdered, MapPin, Minus, Plus, ShoppingBag, WifiOff } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 import { Link } from "@tanstack/react-router";
 import { Badge } from "@/components/ui/badge";
@@ -34,7 +34,7 @@ export function CanteenStatus({ compact = false }: { compact?: boolean }) {
 }
 
 export function QueueCard({ compact = false }: { compact?: boolean }) {
-  return <Card className={cn("overflow-hidden border-primary/20 shadow-sm", compact ? "p-4" : "p-5 sm:p-6")}><div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4"><div className="min-w-0"><div className="flex items-center gap-2 text-sm font-semibold text-primary"><Queue className="h-4 w-4"/>Current queue</div><p className="mt-2 text-2xl font-bold text-foreground">12 <span className="text-base font-medium text-muted-foreground">orders ahead</span></p><p className="mt-1 text-sm text-muted-foreground">Estimated preparation · ~15 min</p></div><div className="grid h-11 w-11 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary"><Clock3 className="h-5 w-5"/></div></div><div className="mt-5 flex gap-1" aria-label="Queue progress">{Array.from({length:12}).map((_,i)=><span key={i} className={cn("h-2 flex-1 rounded-sm",i<8?"bg-primary":"bg-secondary")}/>)}</div><p className="mt-2 text-xs text-muted-foreground">Queue is moving steadily</p></Card>;
+  return <Card className={cn("overflow-hidden border-primary/20 shadow-sm", compact ? "p-4" : "p-5 sm:p-6")}><div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4"><div className="min-w-0"><div className="flex items-center gap-2 text-sm font-semibold text-primary"><ListOrdered className="h-4 w-4"/>Current queue</div><p className="mt-2 text-2xl font-bold text-foreground">12 <span className="text-base font-medium text-muted-foreground">orders ahead</span></p><p className="mt-1 text-sm text-muted-foreground">Estimated preparation · ~15 min</p></div><div className="grid h-11 w-11 shrink-0 place-items-center rounded-lg bg-primary/10 text-primary"><Clock3 className="h-5 w-5"/></div></div><div className="mt-5 flex gap-1" aria-label="Queue progress">{Array.from({length:12}).map((_,i)=><span key={i} className={cn("h-2 flex-1 rounded-sm",i<8?"bg-primary":"bg-secondary")}/>)}</div><p className="mt-2 text-xs text-muted-foreground">Queue is moving steadily</p></Card>;
 }
 
 export function FoodCard({ item, compact = false }: { item: FoodItem; compact?: boolean }) {

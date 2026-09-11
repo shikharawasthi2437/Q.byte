@@ -17,6 +17,7 @@ import { Route as MenuRouteImport } from './routes/menu'
 import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as OrdersRouteImport } from './routes/orders'
 import { Route as PickupRouteImport } from './routes/pickup'
+import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as TrackingRouteImport } from './routes/tracking'
 
 const IndexRoute = IndexRouteImport.update({
@@ -59,6 +60,11 @@ const PickupRoute = PickupRouteImport.update({
   path: '/pickup',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TrackingRoute = TrackingRouteImport.update({
   id: '/tracking',
   path: '/tracking',
@@ -74,6 +80,7 @@ export interface FileRoutesByFullPath {
   '/notifications': typeof NotificationsRoute
   '/orders': typeof OrdersRoute
   '/pickup': typeof PickupRoute
+  '/profile': typeof ProfileRoute
   '/tracking': typeof TrackingRoute
 }
 export interface FileRoutesByTo {
@@ -85,6 +92,7 @@ export interface FileRoutesByTo {
   '/notifications': typeof NotificationsRoute
   '/orders': typeof OrdersRoute
   '/pickup': typeof PickupRoute
+  '/profile': typeof ProfileRoute
   '/tracking': typeof TrackingRoute
 }
 export interface FileRoutesById {
@@ -97,6 +105,7 @@ export interface FileRoutesById {
   '/notifications': typeof NotificationsRoute
   '/orders': typeof OrdersRoute
   '/pickup': typeof PickupRoute
+  '/profile': typeof ProfileRoute
   '/tracking': typeof TrackingRoute
 }
 export interface FileRouteTypes {
@@ -110,6 +119,7 @@ export interface FileRouteTypes {
     | '/notifications'
     | '/orders'
     | '/pickup'
+    | '/profile'
     | '/tracking'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -121,6 +131,7 @@ export interface FileRouteTypes {
     | '/notifications'
     | '/orders'
     | '/pickup'
+    | '/profile'
     | '/tracking'
   id:
     | '__root__'
@@ -132,6 +143,7 @@ export interface FileRouteTypes {
     | '/notifications'
     | '/orders'
     | '/pickup'
+    | '/profile'
     | '/tracking'
   fileRoutesById: FileRoutesById
 }
@@ -144,6 +156,7 @@ export interface RootRouteChildren {
   NotificationsRoute: typeof NotificationsRoute
   OrdersRoute: typeof OrdersRoute
   PickupRoute: typeof PickupRoute
+  ProfileRoute: typeof ProfileRoute
   TrackingRoute: typeof TrackingRoute
 }
 
@@ -205,6 +218,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PickupRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tracking': {
       id: '/tracking'
       path: '/tracking'
@@ -224,6 +244,7 @@ const rootRouteChildren: RootRouteChildren = {
   NotificationsRoute: NotificationsRoute,
   OrdersRoute: OrdersRoute,
   PickupRoute: PickupRoute,
+  ProfileRoute: ProfileRoute,
   TrackingRoute: TrackingRoute,
 }
 export const routeTree = rootRouteImport
