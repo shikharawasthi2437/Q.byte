@@ -1,0 +1,7 @@
+import { CheckCircle2, Clock3, MapPin } from "lucide-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { PickupDetails } from "@/components/qbite/shared";
+export const Route=createFileRoute("/confirmation")({head:()=>({meta:[{title:"Order Confirmed — QBite"},{name:"description",content:"Your QBite campus canteen order is confirmed."},{property:"og:title",content:"Order Confirmed — QBite"},{property:"og:description",content:"Your campus food is queued for pickup."},{property:"og:type",content:"website"},{name:"twitter:card",content:"summary_large_image"}]}),component:Confirmation});
+function Confirmation(){return <div className="mx-auto max-w-2xl py-8 text-center"><div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-status-ready text-status-ready-foreground"><CheckCircle2 className="h-8 w-8"/></div><h1 className="mt-5 text-3xl font-bold">Order confirmed!</h1><p className="mt-2 text-muted-foreground">Order QB105 is now in the canteen queue.</p><Card className="mt-7 p-5 text-left"><PickupDetails/><div className="mt-4 rounded-lg bg-secondary p-4"><p className="flex items-center gap-2 text-sm"><Clock3 className="h-4 w-4 text-primary"/>Estimated ready <strong className="ml-auto">1:24 PM</strong></p></div></Card><div className="mt-6 flex flex-wrap justify-center gap-3"><Button asChild><Link to="/tracking">Track order</Link></Button><Button asChild variant="outline"><Link to="/">Back home</Link></Button></div></div>}

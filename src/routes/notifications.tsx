@@ -1,0 +1,7 @@
+import { Bell, CheckCircle2, ChefHat, Clock3 } from "lucide-react";
+import { createFileRoute } from "@tanstack/react-router";
+import { Card } from "@/components/ui/card";
+import { PageIntro } from "@/components/qbite/shared";
+import { notifications } from "@/data/qbite";
+export const Route=createFileRoute("/notifications")({head:()=>({meta:[{title:"Notifications — QBite"},{name:"description",content:"See order and pickup updates from QBite."},{property:"og:title",content:"Notifications — QBite"},{property:"og:description",content:"Campus order and pickup notifications."},{property:"og:type",content:"website"},{name:"twitter:card",content:"summary_large_image"}]}),component:Notifications});
+function Notifications(){const icon=(k:string)=>k==="ready"?<CheckCircle2/>:k==="preparing"?<ChefHat/>:k==="reminder"?<Clock3/>:<Bell/>;return <div className="space-y-6"><PageIntro eyebrow="Stay on time" title="Notifications" description="Order updates that help you arrive right when your food is ready."/><div className="space-y-3">{notifications.map(n=><Card key={n.id} className={n.unread?"border-primary/30 bg-primary/5 p-4":"p-4"}><div className="grid grid-cols-[auto_minmax(0,1fr)_auto] gap-3"><span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-secondary text-primary [&_svg]:h-5 [&_svg]:w-5">{icon(n.kind)}</span><div className="min-w-0"><h2 className="font-bold">{n.title}</h2><p className="mt-1 text-sm text-muted-foreground">{n.body}</p></div><span className="text-xs text-muted-foreground">{n.time}</span></div></Card>)}</div></div>}
